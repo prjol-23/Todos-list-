@@ -17,11 +17,11 @@ window.addEventListener("load", () => {          //Maintain local storage
     e.preventDefault();
 
     const todo = {
-      content: e.target.elements.content.value,
+      content: e.target.elements.content.value,     //Name of content in form field
       category: e.target.elements.category.value,
       finish: false,
-      createdAt: new Date().getTime(),
-    };
+      createdAt: new Date().getTime(),              //Current date and time in local storage
+    };     
 
     todos.push(todo);
 
@@ -55,19 +55,24 @@ function DisplayTodos() {
     input.type = "checkbox";
     input.checked = todo.finish;
     span.classList.add("bubble");
-    if (todo.category == "personal") {
-      span.classList.add("personal");
-    } else {
-      span.classList.add("business");
-    }
+
+    if (todo.category == 'general') 
+    {
+      span.classList.add('general');
+    } 
+    if (todo.category == 'work') 
+    {
+      span.classList.add('work');
+    } 
+
     content.classList.add("todo-content");
     actions.classList.add("actions");
     edit.classList.add("edit");
     deleteButton.classList.add("delete");
 
     content.innerHTML = `<input type="text" value="${todo.content}" readonly>`;
-    edit.innerHTML = "Edit";
-    deleteButton.innerHTML = "Delete";
+    edit.innerHTML = 'Edit';
+    deleteButton.innerHTML = 'Delete';
 
     label.appendChild(input);
     label.appendChild(span);
@@ -83,7 +88,7 @@ function DisplayTodos() {
       todoItem.classList.add("finish");
     }
 
-    input.addEventListener("change", (e) => {
+    input.addEventListener("click", (e) => {
       todo.finish = e.target.checked;
       localStorage.setItem("todos", JSON.stringify(todos));
 
