@@ -3,8 +3,8 @@
 :root {
 
     --primary: #EA40A4;
-    --work: #3A82EE;
-    --general: var(--primary);
+    --Job: #3A82EE;
+    --Others: var(--primary);
     --light: #EEE;
     --grey: #888;
     --dark: #313154;
@@ -12,8 +12,8 @@
 
     --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 
-    --work-glow: 0px 0px 4px rgba(58, 130, 238, 0.75);
-    --general-glow: 0px 0px 4px rgba(234, 64, 164, 0.75);
+    --Job-glow: 0px 0px 4px rgba(58, 130, 238, 0.75);
+    --Others-glow: 0px 0px 4px rgba(234, 64, 164, 0.75);
 }
 
 * {
@@ -129,13 +129,13 @@ input[type="checkbox"] {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    border: 2px solid var(--work);
-    box-shadow: var(--work-glow);
+    border: 2px solid var(--Job);
+    box-shadow: var(--Job-glow);
 }
 
-.bubble.general {
-    border-color: var(--general);        
-    box-shadow: var(--general-glow);
+.bubble.Others {
+    border-color: var(--Others);        
+    box-shadow: var(--Others-glow);
 }
 
 /* Adding check */
@@ -146,16 +146,16 @@ input[type="checkbox"] {
     opacity: 0;
     width: 0px;
     height: 0px;
-    background-color: var(--work);
-    box-shadow: var(--work-glow);
+    background-color: var(--Job);
+    box-shadow: var(--Job-glow);
     border-radius: 50%;
     transition: 0.2s ease-in-out;
 
 }
 
-.bubble.general::after {
-    background-color: var(--general);
-    box-shadow: var(--general-glow);
+.bubble.Others::after {
+    background-color: var(--Others);
+    box-shadow: var(--Others-glow);
 }
 
 
@@ -182,7 +182,7 @@ input:checked ~ .bubble::after {
     color: #FFF;
     background-color: var(--dark);
     border-radius: 0.5rem;
-    box-shadow: var(--general-glow);
+    box-shadow: var(--Others-glow);
     cursor: pointer;
     transition: 0.2s ease-in-out;
 }

@@ -1,122 +1,122 @@
-window.addEventListener("load", () => {          //Maintain local storage
-  
-  todos = JSON.parse(localStorage.getItem("todos")) || []; //todos is global
-  const nameInput = document.querySelector("#name");
-  const newTodoForm = document.querySelector("#new-todo-form");
+window.addEventListener('load', () => {   //Maintain local storage
 
-  const username = localStorage.getItem("username") || "";
 
-  nameInput.value = username;
 
-  nameInput.addEventListener("change", (e) => {             //Applies local storage
+	todos = JSON.parse(localStorage.getItem('todos')) || [];           //todos is global
+	const nameInput = document.querySelector('#name');
+	const newTodoForm = document.querySelector('#new-todo-form');
+
+	const username = localStorage.getItem('username') || '';
+
+	nameInput.value = username;
+
+	nameInput.addEventListener('change', (e) => {                   //Applies local storage
     
-    localStorage.setItem("username", e.target.value);
-  });
+		localStorage.setItem('username', e.target.value);
+	})
 
-  newTodoForm.addEventListener("submit", (e) => {
-    e.preventDefault();
+	newTodoForm.addEventListener('submit', e => {
+		e.preventDefault();
 
-    const todo = {
-      content: e.target.elements.content.value,     //Name of content in form field
-      category: e.target.elements.category.value,
-      finish: false,
-      createdAt: new Date().getTime(),              //Current date and time in local storage
-    };     
+		const todo = {
+			content: e.target.elements.content.value,           //Name of content in form field
+			category: e.target.elements.category.value,
+			done: false,
+			createdAt: new Date().getTime()						//Current date and time in local storage
+		}
 
-    todos.push(todo);
+		todos.push(todo);
 
-    localStorage.setItem("todos", JSON.stringify(todos));    //Convert jS to JSON file
+		localStorage.setItem('todos', JSON.stringify(todos));
 
-    // Reset the form
-    e.target.reset();
+		// Reset the form
+		e.target.reset();
 
-    DisplayTodos();
-  });
+		DisplayTodos()
+	})
 
-  DisplayTodos();
-});
+	DisplayTodos()
+})
 
-function DisplayTodos() {
-  const todoList = document.querySelector("#todo-list");
-  todoList.innerHTML = "";
+function DisplayTodos () {
+	const todoList = document.querySelector('#todo-list');
+	todoList.innerHTML = "";
 
-  todos.forEach((todo) => {
-    const todoItem = document.createElement("div");
-    todoItem.classList.add("todo-item");
+	todos.forEach(todo => {
+		const todoItem = document.createElement('div');
+		todoItem.classList.add('todo-item');
 
-    const label = document.createElement("label");
-    const input = document.createElement("input");
-    const span = document.createElement("span");
-    const content = document.createElement("div");
-    const actions = document.createElement("div");
-    const edit = document.createElement("button");
-    const deleteButton = document.createElement("button");
+		const label = document.createElement('label');
+		const input = document.createElement('input');
+		const span = document.createElement('span');
+		const content = document.createElement('div');
+		const actions = document.createElement('div');
+		const edit = document.createElement('button');
+		const deleteButton = document.createElement('button');
 
-    input.type = "checkbox";
-    input.checked = todo.finish;
-    span.classList.add("bubble");
+		input.type = 'checkbox';
+		input.checked = todo.done;
+		span.classList.add('bubble');
+		if (todo.category == 'Others') {
+			span.classList.add('Others');
+		} else {
+			span.classList.add('Job');
+		}
+		content.classList.add('todo-content');
+		actions.classList.add('actions');
+		edit.classList.add('edit');
+		deleteButton.classList.add('delete');
 
-    if (todo.category == 'general') 
-    {
-      span.classList.add('general');
-    } 
-    if (todo.category == 'work') 
-    {
-      span.classList.add('work');
-    } 
+		content.innerHTML = `<input type="text" value="${todo.content}" readonly>`;
+		edit.innerHTML = 'Edit';
+		deleteButton.innerHTML = 'Delete';
 
-    content.classList.add("todo-content");
-    actions.classList.add("actions");
-    edit.classList.add("edit");
-    deleteButton.classList.add("delete");
+		label.appendChild(input);
+		label.appendChild(span);
+		actions.appendChild(edit);
+		actions.appendChild(deleteButton);
+		todoItem.appendChild(label);
+		todoItem.appendChild(content);
+		todoItem.appendChild(actions);
 
-    content.innerHTML = `<input type="text" value="${todo.content}" readonly>`;
-    edit.innerHTML = 'Edit';
-    deleteButton.innerHTML = 'Delete';
+		todoList.appendChild(todoItem);
 
-    label.appendChild(input);
-    label.appendChild(span);
-    actions.appendChild(edit);
-    actions.appendChild(deleteButton);
-    todoItem.appendChild(label);
-    todoItem.appendChild(content);
-    todoItem.appendChild(actions);
+		if (todo.done) {
+			todoItem.classList.add('done');
+		}
+		
+		input.addEventListener('change', (e) => {
+			todo.done = e.target.checked;
+			localStorage.setItem('todos', JSON.stringify(todos));
 
-    todoList.appendChild(todoItem);
+			if (todo.done) {
+				todoItem.classList.add('done');
+			} else {
+				todoItem.classList.remove('done');
+			}
 
-    if (todo.finish) {
-      todoItem.classList.add("finish");
-    }
+			DisplayTodos()
 
-    input.addEventListener("click", (e) => {
-      todo.finish = e.target.checked;
-      localStorage.setItem("todos", JSON.stringify(todos));
+		})
 
-      if (todo.finish) {
-        todoItem.classList.add("finish");
-      } else {
-        todoItem.classList.remove("finish");
-      }
+		edit.addEventListener('click', (e) => {
+			const input = content.querySelector('input');
+			input.removeAttribute('readonly');
+			input.focus();
+			input.addEventListener('blur', (e) => {
+				input.setAttribute('readonly', true);
+				todo.content = e.target.value;
+				localStorage.setItem('todos', JSON.stringify(todos));
+				DisplayTodos()
 
-      DisplayTodos();
-    });
+			})
+		})
 
-    edit.addEventListener("click", (e) => {
-      const input = content.querySelector("input");
-      input.removeAttribute("readonly");
-      input.focus();
-      input.addEventListener("blur", (e) => {
-        input.setAttribute("readonly", true);
-        todo.content = e.target.value;
-        localStorage.setItem("todos", JSON.stringify(todos));
-        DisplayTodos();
-      });
-    });
+		deleteButton.addEventListener('click', (e) => {
+			todos = todos.filter(t => t != todo);
+			localStorage.setItem('todos', JSON.stringify(todos));
+			DisplayTodos()
+		})
 
-    deleteButton.addEventListener("click", (e) => {
-      todos = todos.filter((t) => t != todo);
-      localStorage.setItem("todos", JSON.stringify(todos));
-      DisplayTodos();
-    });
-  });
+	})
 }
